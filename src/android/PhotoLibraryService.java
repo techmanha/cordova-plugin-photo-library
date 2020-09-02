@@ -81,9 +81,19 @@ public class PhotoLibraryService {
       put("title", MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME);
     }};
 
-    final ArrayList<JSONObject> queryResult = queryContentProvider(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, "1) GROUP BY 1,(2");
-
-    return queryResult;
+    final ArrayList<JSONObject> queryResult = queryContentProvider(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, "bucket_id!=0");
+    ArrayList<JSONObject> queryResultNew=new ArrayList<JSONObject>();
+    ArrayList<String> flags = new ArrayList<String>();
+    for(int i=0; i<queryResult.size();i++) {
+        //Log.d(TAG, "country:" + queryResult.get(i));
+      if(!flags.contains(queryResult.get(i).getString("id")))
+      {
+        flags.add(queryResult.get(i).getString("id"));
+        queryResultNew.add(queryResult.get(i));
+      }
+      
+    }
+    return queryResultNew;
 
   }
 
